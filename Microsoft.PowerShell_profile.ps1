@@ -456,3 +456,11 @@ Clear-host
 
 # 使用新版的 oh-my-posh 載入保哥的設定
 oh-my-posh init pwsh --config "~/.ohmyposhv3-will.omp.json" | Invoke-Expression
+
+# miniKube 縮短的指令
+function kubectl { minikube kubectl -- $args }
+
+# 用 code-insiders 開啟 Visual Studio Code Insiders
+function codi {
+    code-insiders $args
+}
