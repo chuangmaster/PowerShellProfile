@@ -464,3 +464,24 @@ function kubectl { minikube kubectl -- $args }
 function codi {
     code-insiders $args
 }
+
+# 產生一個 自訂長度的 secret
+function secret {
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [int]$bits
+    )
+    # 檢查參數
+    if ($bits -le 0 -or ($bits % 8) -ne 0) {
+        Write-Host "請輸入 8 的倍數（如 128, 256, 512）"
+        return
+    }
+
+    # 產生指定長度的隨機 secret 並輸出（Base64 格式）
+    $byteLength = [int]($bits / 8)
+    $bytes = New-Object 'Byte[]' $byteLength
+    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+    $base64Secret = [Convert]::ToBase64String($bytes)
+    Write-Host $base64Secret
+    Set-Clipboard $base64Secret
+}
