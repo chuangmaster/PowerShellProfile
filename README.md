@@ -1,6 +1,7 @@
 # PowerShell Profile 設定檔
 
 這是一個增強的 PowerShell 設定檔，提供了更好的命令列體驗、快捷鍵綁定、自動完成功能和實用的自訂函數。
+原始版本來自 [Will 保哥](https://blog.miniasp.com/post/2021/11/24/PowerShell-prompt-with-Oh-My-Posh-and-Windows-Terminal)，但增加了一些自己的常用的功能作為備用設定之用。
 
 ## 功能概覽
 
