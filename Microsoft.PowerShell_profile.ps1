@@ -454,6 +454,12 @@ Import-Module -Name Terminal-Icons
 # 清除一開始有的沒有的文字
 Clear-host
 
+# --- Force UTF-8 console 避免中文字亂碼 ---
+chcp.com 65001 | Out-Null
+[Console]::InputEncoding  = New-Object System.Text.UTF8Encoding $false
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false
+$OutputEncoding           = New-Object System.Text.UTF8Encoding $false
+
 # 使用新版的 oh-my-posh 載入保哥的設定
 oh-my-posh init pwsh --config "~/.ohmyposhv3-will.omp.json" | Invoke-Expression
 
