@@ -1,17 +1,27 @@
 # PowerShell Profile 設定檔
 
 這是一個增強的 PowerShell 設定檔，提供了更好的命令列體驗、快捷鍵綁定、自動完成功能和實用的自訂函數。
-原始版本來自 [Will 保哥](https://blog.miniasp.com/post/2021/11/24/PowerShell-prompt-with-Oh-My-Posh-and-Windows-Terminal)，但增加了一些自己的常用的功能作為備用設定之用。
+原始版本來自 [Will 保哥](https://blog.miniasp.com/post/2021/11/24/PowerShell-prompt-with-Oh-My-Posh-and-Windows-Terminal)，並增加了以下常用功能。
 
 ## 功能概覽
 
 ### 🎯 主要功能
 - **PSReadLine 增強** - 提供命令歷史記錄、預測輸入和智能編輯功能
-- **自訂快捷鍵** - 類似 Bash 的快捷鍵操作
+- **自訂快捷鍵** - 類似 Bash 的快捷鍵操作（Ctrl+D, Ctrl+W, Ctrl+E, Ctrl+A 等）
 - **智能括號配對** - 自動配對引號、括號和大括號
 - **自動完成** - 支援 winget、dotnet 和 npm 的參數自動完成
-- **實用函數** - 包含密碼生成、快捷導航等實用工具
+- **GitHub Copilot CLI** - 整合 GitHub Copilot CLI 的快速命令別名
+- **實用函數** - 包含密碼生成、快捷導航、開發工具別名等
 - **美化終端** - 使用 oh-my-posh 和 Terminal-Icons 美化外觀
+
+### 📦 內建自訂函數
+| 函數 | 功能說明 |
+|------|---------|
+| `hosts` | 以管理員權限開啟 Windows hosts 檔案 |
+| `cdw` | 快速切換到工作目錄 (D:\Repository) |
+| `New-Password` | 生成密碼學安全的隨機密碼 |
+| `c` | GitHub Copilot CLI 快速命令（支援互動模式與實驗性工具） |
+| `codi` | 開啟 Visual Studio Code Insiders |
 
 ---
 
