@@ -21,6 +21,7 @@
 | `cdw` | 快速切換到工作目錄 (D:\Repository) |
 | `New-Password` | 生成密碼學安全的隨機密碼 |
 | `c` | GitHub Copilot CLI 快速命令（支援互動模式與實驗性工具） |
+| `spc` / `Split-Copilot` | 在當前目錄分割窗格並啟動 GitHub Copilot CLI |
 | `kubectl` | minikube kubectl 指令的簡化別名 |
 | `codi` | 開啟 Visual Studio Code Insiders |
 
@@ -229,6 +230,113 @@ codi "C:\MyProject"
 **說明**: 
 - `code-insiders` 指令的簡化別名
 - 支援所有 VS Code 的命令列參數
+
+#### `Split-Copilot` / `spc`
+**功能**: 在當前目錄分割窗格並啟動 GitHub Copilot CLI
+
+**使用方法**:
+```powershell
+# 在當前目錄分割窗格並開啟 Copilot CLI
+spc
+```
+
+**說明**: 
+- 自動檢查 Windows Terminal 和 GitHub Copilot CLI 是否安裝
+- 使用 `wt split-pane -d "$PWD"` 在當前目錄開啟新窗格
+- 新窗格中自動啟動 GitHub Copilot CLI
+- 詳細的 Windows Terminal 分割窗格設定請參考「Windows Terminal 分割窗格持久化修復」章節
+
+---
+
+## Windows Terminal 分割窗格持久化修復
+
+### 問題說明
+
+在使用 Windows Terminal 時，當你使用快捷鍵分割窗格（如 `Alt+Shift+-` 水平分割或 `Alt+Shift++` 垂直分割）或複製分頁（`Ctrl+Shift+D`）時，新開的窗格通常會回到家目錄（`~` 或 `C:\Users\YourName`），而不是保持在當前工作目錄。這在開發過程中非常不便。
+
+### 解決方案
+
+本設定檔已經整合了 `Split-Copilot` 函數（別名：`spc`），可以在當前目錄分割窗格並啟動 GitHub Copilot CLI。但要讓 Windows Terminal 的原生分割功能也保留工作目錄，需要使用 [Fix-SplitPanePersistence](https://github.com/doggy8088/splitpanefix) 工具。
+
+### 使用 Fix-SplitPanePersistence 工具
+
+這個工具會自動設定三個關鍵組件，讓分割窗格功能正常保留工作目錄：
+
+1. **PowerShell 設定檔** - 確保正確載入 Oh My Posh 或加入 OSC 逸出序列
+2. **Oh My Posh 主題** - 加入 `"pwd": "osc99"` 設定以發送目錄資訊
+3. **Windows Terminal 設定** - 更新快捷鍵使用 `splitMode: duplicate`
+
+#### 快速使用
+
+```powershell
+# 1. 下載修復腳本
+git clone https://github.com/doggy8088/splitpanefix.git
+cd splitpanefix
+
+# 2. 預覽變更（不會實際修改檔案）
+.\Fix-SplitPanePersistence.ps1 -WhatIf
+
+# 3. 套用修復
+.\Fix-SplitPanePersistence.ps1
+
+# 4. 如果需要 GitHub Copilot CLI 整合（本設定檔已包含）
+.\Fix-SplitPanePersistence.ps1 -Copilot
+
+# 5. 重新啟動 Windows Terminal
+```
+
+#### 修復後的效果
+
+執行修復工具後，以下快捷鍵會在當前目錄開啟新窗格：
+
+| 快捷鍵 | 功能 |
+|--------|------|
+| `Alt+Shift+-` | 水平分割窗格（保留當前目錄） |
+| `Alt+Shift++` | 垂直分割窗格（保留當前目錄） |
+| `Ctrl+Shift+D` | 複製分頁（保留當前目錄） |
+| `spc` 命令 | 分割窗格並啟動 Copilot CLI（使用本設定檔的函數） |
+
+### Split-Copilot 函數
+
+本設定檔已經包含 `Split-Copilot` 函數（別名：`spc`），無需使用 `-Copilot` 參數。這個函數會：
+
+1. 檢查 Windows Terminal 和 GitHub Copilot CLI 是否安裝
+2. 在當前工作目錄分割新窗格
+3. 自動啟動 GitHub Copilot CLI
+
+**使用方式**：
+```powershell
+# 直接輸入 spc 即可在當前目錄開啟 Copilot
+spc
+```
+
+### 技術說明
+
+**為什麼需要這個修復？**
+
+Windows Terminal 本身無法知道 Shell 的當前目錄，必須由 Shell 主動告知。修復工具透過以下機制實現：
+
+- **OSC 逸出序列**：Oh My Posh 或自訂 prompt 函數發送 OSC 9;9 或 OSC 99 序列告知 Windows Terminal 當前目錄
+- **splitMode: duplicate**：Windows Terminal 設定使用此模式來繼承 Shell 整合資訊，而非啟動全新 Shell
+
+**與本設定檔的整合**
+
+- 本設定檔已經正確載入 Oh My Posh（第 437-444 行）
+- 如果沒有 Oh My Posh，修復工具會自動加入替代的 prompt 函數
+- `Split-Copilot` 函數使用 `wt split-pane -d "$PWD"` 明確傳入目錄，不依賴 OSC 序列
+
+### 回復變更
+
+修復工具會自動備份所有被修改的檔案（帶時間戳），如需回復：
+
+```powershell
+# 查找備份檔案
+Get-ChildItem $env:USERPROFILE -Filter "*.bak-*" -Recurse
+Get-ChildItem "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*" -Filter "*.bak-*" -Recurse
+
+# 還原備份（範例）
+Copy-Item "settings.json.bak-20240115-143022" "settings.json"
+```
 
 ---
 
