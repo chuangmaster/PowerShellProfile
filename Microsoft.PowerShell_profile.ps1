@@ -121,6 +121,45 @@ function New-Password {
     }
 }
 
+# 產生一個 自訂長度的 secret
+function New-Secret {
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [int]$bits
+    )
+
+    if ($bits -le 0 -or ($bits % 8) -ne 0) {
+        Write-Error "請輸入 8 的倍數（如 128, 256, 512）"
+        return
+    }
+
+    $byteLength = [int]($bits / 8)
+    $bytes = New-Object "Byte[]" $byteLength
+    
+    # 使用 Using 語法確保資源釋放
+    $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $rng.GetBytes($bytes)
+    } finally {
+        $rng.Dispose()
+    }
+
+    $base64Secret = [Convert]::ToBase64String($bytes)
+    
+    # 輸出到 Pipeline (這樣才能被變數接收)
+    $base64Secret
+    
+    # 同時複製到剪貼簿 (視覺提示)
+    $base64Secret | Set-Clipboard
+    Write-Host "Secret 已複製到剪貼簿！" -ForegroundColor Cyan
+}
+
+# 分割窗格並在目前目錄啟動 GitHub Copilot CLI
+function Split-Copilot {
+    wt -w 0 split-pane -d "$PWD" pwsh -NoLogo -NoExit -Command "copilot"
+}
+Set-Alias -Name spc -Value Split-Copilot
+
 # =============================================================================
 # 2. 參數自動補全 (Argument Completers)
 #    通常在互動模式下有用，但放在外層較為保險
