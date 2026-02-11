@@ -136,7 +136,7 @@ function New-Secret {
     $byteLength = [int]($bits / 8)
     $bytes = New-Object "Byte[]" $byteLength
     
-    # 使用 Using 語法確保資源釋放
+    # 使用 try-finally 確保資源釋放
     $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
     try {
         $rng.GetBytes($bytes)
@@ -156,7 +156,24 @@ function New-Secret {
 
 # 分割窗格並在目前目錄啟動 GitHub Copilot CLI
 function Split-Copilot {
-    wt -w 0 split-pane -d "$PWD" pwsh -NoLogo -NoExit -Command "copilot"
+    try {
+        # 檢查 Windows Terminal 是否可用
+        if (-not (Get-Command wt -ErrorAction SilentlyContinue)) {
+            Write-Error "Windows Terminal (wt) 未安裝或不在 PATH 中。請先安裝 Windows Terminal。"
+            return
+        }
+        
+        # 檢查 GitHub Copilot CLI 是否可用
+        if (-not (Get-Command copilot -ErrorAction SilentlyContinue)) {
+            Write-Error "GitHub Copilot CLI 未安裝或不在 PATH 中。請先安裝 GitHub Copilot CLI。"
+            return
+        }
+        
+        wt -w 0 split-pane -d "$PWD" pwsh -NoLogo -NoExit -Command "copilot"
+    }
+    catch {
+        Write-Error "執行 Split-Copilot 時發生錯誤: $_"
+    }
 }
 Set-Alias -Name spc -Value Split-Copilot
 
