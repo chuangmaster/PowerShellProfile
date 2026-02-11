@@ -242,9 +242,19 @@ if ($Host.UI.SupportsVirtualTerminal) {
         Import-Module PSReadLine -ErrorAction SilentlyContinue
 
         # 基本設定
-        Set-PSReadLineOption -PredictionSource History
-        Set-PSReadLineOption -PredictionViewStyle ListView
         Set-PSReadLineOption -EditMode Windows
+        
+        # 預測功能設定 - 僅在互動式且非重導向環境中啟用
+        # 避免在 copilot CLI 或其他非互動環境中出現錯誤
+        if ([Environment]::UserInteractive -and -not [Console]::IsOutputRedirected) {
+            try {
+                Set-PSReadLineOption -PredictionSource History
+                Set-PSReadLineOption -PredictionViewStyle ListView
+            }
+            catch {
+                # 忽略預測功能設定錯誤，不影響其他功能
+            }
+        }
 
         # --- 快捷鍵綁定 ---
         Set-PSReadlineKeyHandler -Chord ctrl+d -Function ViExit
