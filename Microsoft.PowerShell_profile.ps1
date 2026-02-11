@@ -36,6 +36,9 @@ function c {
     }
 }
 
+# miniKube 縮短的指令
+function kubectl { minikube kubectl -- $args }
+
 # 產生亂數密碼 (保留你原本強大的邏輯)
 function New-Password {
     <#
