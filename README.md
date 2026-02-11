@@ -21,6 +21,7 @@
 | `cdw` | 快速切換到工作目錄 (D:\Repository) |
 | `New-Password` | 生成密碼學安全的隨機密碼 |
 | `c` | GitHub Copilot CLI 快速命令（支援互動模式與實驗性工具） |
+| `kubectl` | minikube kubectl 指令的簡化別名 |
 | `codi` | 開啟 Visual Studio Code Insiders |
 
 ---
@@ -189,6 +190,26 @@ c -y "如何部署應用程式"
 - 簡化 GitHub Copilot CLI 的使用
 - 自動加上 `--banner` 參數以顯示橫幅
 - 支援實驗性工具的快速啟用
+
+#### `kubectl`
+**功能**: minikube kubectl 指令的簡化別名
+
+**使用方法**:
+```powershell
+# 等同於 minikube kubectl -- get pods
+kubectl get pods
+
+# 等同於 minikube kubectl -- apply -f deployment.yaml
+kubectl apply -f deployment.yaml
+
+# 等同於 minikube kubectl -- get services
+kubectl get services
+```
+
+**說明**: 
+- 簡化 minikube 環境下的 kubectl 指令使用
+- 自動在指令前加上 `minikube kubectl --`
+- 支援所有 kubectl 的原生參數和命令
 
 #### `codi`
 **功能**: 開啟 Visual Studio Code Insiders
