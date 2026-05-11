@@ -391,6 +391,10 @@ Copy-Item "settings.json.bak-20240115-143022" "settings.json"
 1. **模組載入失敗**:
    - 確保已安裝必要的模組
    - 檢查執行原則設定: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+   - 若遇到 `WARNING:Terminal-Icons 輸入失敗,建議重新執行 Install-Module Terminal-Icons -Force`，可執行：
+     ```powershell
+     Uninstall-Module Terminal-Icons -AllVersions -Force; Install-Module Terminal-Icons -Force -Scope CurrentUser
+     ```
 
 2. **oh-my-posh 無法載入**:
    - 確認 oh-my-posh 已正確安裝
