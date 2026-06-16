@@ -48,6 +48,14 @@ function c {
     else { copilot --banner @args }
 }
 
+# Claude AI CLI
+function cl { 
+    if ($args.Count -eq 0) { claude } 
+    elseif ($args[0] -eq '-p') { claude -p $args[1..($args.Count - 1)] } 
+    elseif ($args[0] -eq '-r') { claude -r } 
+    else { claude @args }
+}
+
 function kubectl { minikube kubectl -- $args }
 
 # New-Password
