@@ -11,6 +11,7 @@
 - **智能括號配對** - 自動配對引號、括號和大括號
 - **自動完成** - 支援 winget、dotnet 和 npm 的參數自動完成
 - **GitHub Copilot CLI** - 整合 GitHub Copilot CLI 的快速命令別名
+- **Cloude CLI** - 整合 Cloude CLI 的快速命令別名
 - **實用函數** - 包含密碼生成、快捷導航、開發工具別名等
 - **美化終端** - 使用 oh-my-posh 和 Terminal-Icons 美化外觀
 
@@ -21,6 +22,7 @@
 | `cdw` | 快速切換到工作目錄 (D:\Repository) |
 | `New-Password` | 生成密碼學安全的隨機密碼 |
 | `c` | GitHub Copilot CLI 快速命令（支援互動模式與實驗性工具） |
+| `cl` | Claude CLI 快速命令（支援互動模式與實驗性工具） |
 | `spc` / `Split-Copilot` | 在當前目錄分割窗格並啟動 GitHub Copilot CLI |
 | `kubectl` | minikube kubectl 指令的簡化別名 |
 | `codi` | 開啟 Visual Studio Code Insiders |
